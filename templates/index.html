@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Inicio | CitoSmart{% endblock %}
+{% block content %}
+<section class="hero-panel">
+    <div class="row g-4 align-items-center">
+        <div class="col-lg-7">
+            <span class="eyebrow">Plataforma de citologia asistida por IA</span>
+            <h1 class="hero-title">Acceso seguro, flujo mas claro y seguimiento clinico en una sola app.</h1>
+            <p class="hero-copy">
+                CitoSmart concentra el alta de usuarios, el antecedente clinico del paciente, el perfil del profesional
+                y el analisis citologico en un recorrido mas cerrado y facil de seguir.
+            </p>
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <a href="{{ url_for('auth.register') }}" class="btn btn-cta-primary btn-lg">Crear cuenta</a>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-lg">Iniciar sesion</a>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="hero-stat-card">
+                <div class="hero-stat-grid">
+                    <article>
+                        <span>Paso 1</span>
+                        <strong>Alta basica</strong>
+                        <p>Nombre, correo, telefono y contrasena para abrir la cuenta.</p>
+                    </article>
+                    <article>
+                        <span>Paso 2</span>
+                        <strong>Perfil guiado</strong>
+                        <p>Antecedente clinico para paciente o experiencia profesional segun el rol.</p>
+                    </article>
+                    <article>
+                        <span>Paso 3</span>
+                        <strong>Panel protegido</strong>
+                        <p>Solo usuarios con perfil completo acceden al flujo interno de la plataforma.</p>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="row g-4 mt-2">
+    <div class="col-lg-6">
+        <article class="feature-panel h-100">
+            <span class="panel-tag">Paciente</span>
+            <h2>Tu antecedente clinico queda despues del alta</h2>
+            <p>Primero se crea la cuenta y despues se captura el contexto clinico inicial para dejar el historial mejor ordenado.</p>
+            <ul class="clean-list">
+                <li>Acceso protegido por inicio de sesion</li>
+                <li>Antecedentes clinicos despues del alta</li>
+                <li>Historial, resultados y mensajeria en un solo panel</li>
+            </ul>
+        </article>
+    </div>
+    <div class="col-lg-6">
+        <article class="feature-panel h-100 accent-panel">
+            <span class="panel-tag">Profesional</span>
+            <h2>El perfil profesional se completa en segundo paso</h2>
+            <p>La experiencia, especialidad y perfil clinico ya no estorban el alta basica. Se capturan despues para dejar el acceso mas simple.</p>
+            <ul class="clean-list">
+                <li>Cuenta base mas rapida de crear</li>
+                <li>Experiencia y perfil profesional despues del alta</li>
+                <li>Panel con analisis, pacientes y seguimiento</li>
+            </ul>
+        </article>
+    </div>
+</section>
+{% endblock %}

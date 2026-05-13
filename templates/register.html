@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Registro | CitoSmart{% endblock %}
+{% block content %}
+<section class="register-shell">
+    <div class="section-heading mb-4">
+        <div>
+            <span class="eyebrow">Registro protegido</span>
+            <h1>Crea tu cuenta y después completa tu perfil.</h1>
+            <p>Este primer paso solo pide los datos base. El antecedente clínico del paciente y la experiencia del profesional se capturan después de crear la cuenta.</p>
+        </div>
+    </div>
+
+    <div class="role-switch mb-4">
+        <a href="{{ url_for('auth.register', rol='paciente') }}" class="role-pill {% if selected_role != 'profesional' %}active{% endif %}">Paciente</a>
+        <a href="{{ url_for('auth.register', rol='profesional') }}" class="role-pill {% if selected_role == 'profesional' %}active{% endif %}">Profesional</a>
+    </div>
+
+    <div class="auth-card">
+        <form method="POST" class="row g-3">
+            <input type="hidden" name="rol" value="{{ selected_role }}">
+
+            <div class="col-md-6">
+                <label class="form-label">Nombre completo</label>
+                <input type="text" name="nombre" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Telefono</label>
+                <input type="text" name="telefono" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Correo electrónico</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Tipo de cuenta</label>
+                <input type="text" class="form-control" value="{% if selected_role == 'profesional' %}Profesional{% else %}Paciente{% endif %}" disabled>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Contraseña</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Confirmar contraseña</label>
+                <input type="password" name="confirm_password" class="form-control" required>
+            </div>
+            <div class="col-12">
+                <div class="soft-strip mt-1">
+                    <div>
+                        {% if selected_role == 'profesional' %}
+                        <h3 class="mb-1">Siguiente paso profesional</h3>
+                        <p class="mb-0">Después del alta se pedirá especialidad, cédula, institución, experiencia y perfil profesional.</p>
+                        {% else %}
+                        <h3 class="mb-1">Siguiente paso clínico</h3>
+                        <p class="mb-0">Después del alta se pedirán antecedentes clínicos y el contexto inicial del paciente antes de entrar al panel.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 d-flex flex-wrap gap-3 mt-2">
+                <button type="submit" class="btn btn-cta-primary btn-lg">Crear cuenta</button>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-outline-dark btn-lg">Ya tengo cuenta</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %}Panel profesional | CitoSmart{% endblock %}
+{% block content %}
+<section class="dashboard-hero">
+    <div>
+        <span class="eyebrow">Panel profesional</span>
+        <h1>{{ profesional.nombre or profesional.username }}</h1>
+        <p>Gestiona pacientes, carga imágenes citologicas, documenta diagnosticos y da seguimiento mediante mensajeria.</p>
+    </div>
+    <div class="d-flex flex-wrap gap-3">
+        <a href="{{ url_for('ia.subir_imagen') }}" class="btn btn-cta-primary">Nuevo analisis</a>
+        <a href="{{ url_for('chat.mensajes') }}" class="btn btn-outline-dark">Abrir chat</a>
+    </div>
+</section>
+
+<section class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="metric-card">
+            <span>Pacientes</span>
+            <strong>{{ resumen.pacientes }}</strong>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <span>Estudios totales</span>
+            <strong>{{ resumen.estudios }}</strong>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <span>Conversaciones</span>
+            <strong>{{ resumen.conversaciones }}</strong>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <span>Analizados hoy</span>
+            <strong>{{ resumen.estudios_hoy }}</strong>
+        </div>
+    </div>
+</section>
+
+<section class="row g-4">
+    <div class="col-xl-7">
+        <div class="content-card h-100">
+            <div class="section-title-row">
+                <div>
+                    <span class="panel-tag">Gestion de pacientes</span>
+                    <h2>Directorio clinico</h2>
+                </div>
+            </div>
+            {% if pacientes %}
+            <div class="patient-grid">
+                {% for paciente in pacientes %}
+                <article class="patient-card">
+                    <div class="patient-card__head">
+                        <div>
+                            <h3>{{ paciente.nombre }}</h3>
+                            <small>{{ paciente.email or 'Sin correo registrado' }}</small>
+                        </div>
+                        <span class="mini-count">{{ paciente.estudios }} estudios</span>
+                    </div>
+                    <p>{{ paciente.motivo_consulta or 'Motivo de consulta no capturado.' }}</p>
+                    <div class="patient-meta">
+                        <span>{{ paciente.telefono or 'Sin telefono' }}</span>
+                        <span>{{ paciente.ultima_revision or 'Sin revision previa' }}</span>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mt-3">
+                        <a href="{{ url_for('chat.chat_view', receptor_id=paciente.id) }}" class="btn btn-sm btn-outline-dark">Chat</a>
+                        <a href="{{ url_for('ia.subir_imagen', paciente_id=paciente.id) }}" class="btn btn-sm btn-dark">Nuevo analisis</a>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-state">No hay pacientes registrados todavia.</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-xl-5">
+        <div class="content-card h-100">
+            <div class="section-title-row">
+                <div>
+                    <span class="panel-tag">Actividad</span>
+                    <h2>Ultimos estudios</h2>
+                </div>
+            </div>
+            {% if estudios_recientes %}
+            <div class="timeline-list compact">
+                {% for estudio in estudios_recientes %}
+                <article class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div>
+                        <h3>{{ estudio.titulo or 'Estudio citologico' }}</h3>
+                        <p>{{ estudio.paciente_nombre }} · {{ estudio.resultado_ia }}</p>
+                        <small>{{ estudio.fecha }} · Riesgo {{ estudio.nivel_riesgo or 'En revisión' }}</small>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-state">Todavia no has cargado estudios en la plataforma.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

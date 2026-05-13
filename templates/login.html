@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Iniciar sesión | CitoSmart{% endblock %}
+{% block content %}
+<section class="auth-shell">
+    <div class="row g-4 align-items-stretch">
+        <div class="col-lg-5">
+            <div class="auth-copy">
+                <span class="eyebrow">Acceso seguro</span>
+                <h1>Ingresa a tu panel clínico.</h1>
+                <p>
+                    Cada cuenta queda protegida detrás del inicio de sesión y del perfil inicial del usuario.
+                    Así reducimos acciones abiertas y dejamos el flujo más ordenado para paciente y profesional.
+                </p>
+                <div class="auth-notes">
+                    <div>
+                        <strong>Paciente</strong>
+                        <span>Consulta historial, estudios y mensajes cuando ya completó su antecedente clínico.</span>
+                    </div>
+                    <div>
+                        <strong>Profesional</strong>
+                        <span>Entra al panel cuando ya completó experiencia, especialidad y perfil profesional.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div class="auth-card">
+                <h2>Iniciar sesión</h2>
+                <p class="text-muted mb-4">Usa tu correo electrónico y la contraseña con los que registraste tu cuenta.</p>
+
+                <form method="POST" class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label">Correo o usuario</label>
+                        <input type="text" name="identifier" class="form-control form-control-lg" placeholder="Ej. nombre@correo.com" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Contraseña</label>
+                        <input type="password" name="password" class="form-control form-control-lg" placeholder="Tu contraseña" required>
+                    </div>
+                    <div class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="remember" id="remember">
+                            <label class="form-check-label" for="remember">Mantener sesión activa</label>
+                        </div>
+                        <span class="text-muted small">Sesión extendida por 7 días.</span>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-cta-primary btn-lg w-100">Entrar a CitoSmart</button>
+                    </div>
+                </form>
+
+                <div class="divider-label"><span>o si aún no tienes cuenta</span></div>
+                <a href="{{ url_for('auth.register') }}" class="btn btn-outline-dark w-100 btn-lg">Crear una cuenta</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

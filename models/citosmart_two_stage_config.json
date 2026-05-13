@@ -1,0 +1,311 @@
+{
+  "image_size": [
+    160,
+    160
+  ],
+  "target_classes": [
+    "cancer_cervicouterino",
+    "frotis_normal",
+    "vph"
+  ],
+  "stage1_class_names": [
+    "frotis_normal",
+    "anormal"
+  ],
+  "stage2_class_names": [
+    "cancer_cervicouterino",
+    "vph"
+  ],
+  "display_names": {
+    "vph": "VPH",
+    "cancer_cervicouterino": "Cancer cervicouterino",
+    "frotis_normal": "Frotis normal",
+    "anormal": "Anormal",
+    "en_revision": "En revision"
+  },
+  "summary_map": {
+    "vph": "La imagen se parece mas a patrones citologicos asociados a VPH.",
+    "cancer_cervicouterino": "La imagen se parece mas a patrones citologicos asociados a cancer cervicouterino o lesiones de alto riesgo.",
+    "frotis_normal": "La imagen se parece mas a un patron citologico normal dentro de este esquema de entrenamiento.",
+    "anormal": "La imagen se parece mas a un patron anormal y requiere la segunda etapa de clasificacion.",
+    "en_revision": "La prediccion no alcanza un nivel suficiente de confianza o separacion entre clases para comunicarse como clasificacion automatica confiable."
+  },
+  "recommendation_map": {
+    "vph": "Correlacionar con revision profesional y pruebas complementarias.",
+    "cancer_cervicouterino": "Requiere revision profesional prioritaria. Esta salida no reemplaza un diagnostico medico.",
+    "frotis_normal": "Mantener interpretacion profesional segun el contexto clinico y la calidad de la muestra.",
+    "anormal": "Continuar con revision profesional y correlacionar la muestra con la segunda etapa de clasificacion.",
+    "en_revision": "Mostrar probabilidades y solicitar revision profesional manual antes de comunicar una conclusion."
+  },
+  "dataset_sources": {
+    "cervical_cancer_screening_224": "ofriharel/224-224-cervical-cancer-screening",
+    "malhari_dataset": "jocelyndumlao/malhari-dataset",
+    "cytologcervicalcancer": "jxxn03x/cytologcervicalcancer",
+    "sipakmed_marina": "marinaeplissiti/sipakmed",
+    "papsinglecell": "mohaliy2016/papsinglecell",
+    "cervical_cancer_risk_classification": "loveall/cervical-cancer-risk-classification",
+    "sipakmed": "prahladmehandiratta/cervical-cancer-largest-dataset-sipakmed"
+  },
+  "label_aliases": {
+    "frotis_normal": [
+      "normal",
+      "negative",
+      "benign",
+      "healthy",
+      "non cancer",
+      "non-cancer",
+      "nilm"
+    ],
+    "vph": [
+      "vph",
+      "hpv",
+      "lsil",
+      "low grade",
+      "condyloma",
+      "viral"
+    ],
+    "cancer_cervicouterino": [
+      "cancer",
+      "carcinoma",
+      "malignant",
+      "tumor",
+      "lesion",
+      "hsil",
+      "high grade",
+      "scc",
+      "cin",
+      "neoplasia",
+      "squamous"
+    ]
+  },
+  "manual_label_map": {
+    "malhari_dataset::Malhari Dataset/Malhari_Dataset_V1/pap/SSC/P (26)": "cancer_cervicouterino",
+    "malhari_dataset::Malhari Dataset/Malhari_Dataset_V1/pap/SSC/P (32)": "cancer_cervicouterino",
+    "malhari_dataset::Malhari Dataset/Malhari_Dataset_V1/pap/SSC/P (35)": "cancer_cervicouterino",
+    "malhari_dataset::Malhari Dataset/Malhari_Dataset_V1/pap/SSC/P (36)": "cancer_cervicouterino"
+  },
+  "used_folders": [
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/HSIL/P (20)",
+      "target_class": "cancer_cervicouterino"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/HSIL/P (22)",
+      "target_class": "cancer_cervicouterino"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/HSIL/P (24)",
+      "target_class": "cancer_cervicouterino"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/HSIL/P (25)",
+      "target_class": "cancer_cervicouterino"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/LSIL/P (13)",
+      "target_class": "vph"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/LSIL/P (15)",
+      "target_class": "vph"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/LSIL/P (16)",
+      "target_class": "vph"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/LSIL/P (18)",
+      "target_class": "vph"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/LSIL/P (21)",
+      "target_class": "vph"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/LSIL/P (23)",
+      "target_class": "vph"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/LSIL/P (3)",
+      "target_class": "vph"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/LSIL/P (7)",
+      "target_class": "vph"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/NILM/P (1)",
+      "target_class": "frotis_normal"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/NILM/P (10)",
+      "target_class": "frotis_normal"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/NILM/P (11)",
+      "target_class": "frotis_normal"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/NILM/P (12)",
+      "target_class": "frotis_normal"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/NILM/P (14)",
+      "target_class": "frotis_normal"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/NILM/P (17)",
+      "target_class": "frotis_normal"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/NILM/P (19)",
+      "target_class": "frotis_normal"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/NILM/P (2)",
+      "target_class": "frotis_normal"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/NILM/P (27)",
+      "target_class": "frotis_normal"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/NILM/P (29)",
+      "target_class": "frotis_normal"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/NILM/P (30)",
+      "target_class": "frotis_normal"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/NILM/P (4)",
+      "target_class": "frotis_normal"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/NILM/P (5)",
+      "target_class": "frotis_normal"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/NILM/P (6)",
+      "target_class": "frotis_normal"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/NILM/P (8)",
+      "target_class": "frotis_normal"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/NILM/P (9)",
+      "target_class": "frotis_normal"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/SSC/P (26)",
+      "target_class": "cancer_cervicouterino"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/SSC/P (32)",
+      "target_class": "cancer_cervicouterino"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/SSC/P (35)",
+      "target_class": "cancer_cervicouterino"
+    },
+    {
+      "dataset": "malhari_dataset",
+      "folder": "Malhari Dataset/Malhari_Dataset_V1/pap/SSC/P (36)",
+      "target_class": "cancer_cervicouterino"
+    },
+    {
+      "dataset": "cytologcervicalcancer",
+      "folder": "Image/HSIL",
+      "target_class": "cancer_cervicouterino"
+    },
+    {
+      "dataset": "cytologcervicalcancer",
+      "folder": "Image/LSIL",
+      "target_class": "vph"
+    },
+    {
+      "dataset": "cytologcervicalcancer",
+      "folder": "Image/NILM",
+      "target_class": "frotis_normal"
+    },
+    {
+      "dataset": "cytologcervicalcancer",
+      "folder": "Image/SCC",
+      "target_class": "cancer_cervicouterino"
+    }
+  ],
+  "thresholds": {
+    "stage1_normal_probability_threshold": 0.24,
+    "stage1_normal_rescue_min_probability": 0.34,
+    "stage1_normal_rescue_max_anormal_probability": 0.82,
+    "stage1_normal_rescue_max_gap": 0.18,
+    "stage1_review_gap": 0.1,
+    "stage2_cancer_probability_threshold": 0.22,
+    "stage2_confidence_threshold": 0.8,
+    "stage2_review_threshold": 0.56,
+    "stage2_min_margin": 0.1
+  },
+  "training_strategy": {
+    "stage1_normal_target_ratio": 1.7,
+    "stage1_normal_class_bonus": 2.1,
+    "stage1_focal_gamma": 1.0,
+    "stage1_focal_alpha": [
+      1.9,
+      1.0
+    ],
+    "stage1_cytolog_abnormal_fraction": 0.3,
+    "stage1_custom_anormal_factor": 2.0,
+    "custom_normals_dir": "/content/normales_propias",
+    "custom_vph_dir": "/content/vph_propias",
+    "custom_cacu_dir": "/content/cacu_propias",
+    "custom_normals_oversample_factor": 4.0,
+    "custom_vph_oversample_factor": 3.0,
+    "custom_cacu_oversample_factor": 4.0,
+    "stage2_public_keep_fraction": 0.7,
+    "stage2_cancer_class_bonus": 1.35,
+    "stage2_vph_class_bonus": 1.05,
+    "stage2_focal_gamma": 1.0,
+    "stage2_focal_alpha": [
+      1.35,
+      1.0
+    ]
+  },
+  "notes": [
+    "Version final con imagenes propias de frotis normal, VPH y CACU incorporadas al entrenamiento.",
+    "Stage 1 prioriza rescatar frotis normal sin perder de vista anormalidad real.",
+    "Stage 2 calibra la frontera CACU vs VPH con umbral de validacion y mayor peso para CACU.",
+    "Antes de integrarlo al backend, revisar Stage 1, Stage 2 y el pipeline combinado."
+  ]
+}

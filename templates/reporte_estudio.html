@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Reporte de estudio | CitoSmart</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 14mm;
+        }
+
+        :root {
+            color-scheme: light;
+            --ink: #1f3142;
+            --muted: #5a6b7a;
+            --line: #d7e0e7;
+            --teal: #157a7d;
+            --soft: #eef4f7;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 32px;
+            font-family: "Segoe UI", sans-serif;
+            color: var(--ink);
+            background: white;
+        }
+
+        h1, h2, h3 {
+            font-family: Georgia, "Times New Roman", serif;
+            margin: 0 0 12px;
+        }
+
+        p, li, small {
+            line-height: 1.55;
+        }
+
+        .report-shell {
+            max-width: 1040px;
+            margin: 0 auto;
+        }
+
+        .report-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding: 14px 16px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: #f8fbfc;
+        }
+
+        .report-toolbar p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .toolbar-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .toolbar-actions a,
+        .toolbar-actions button {
+            border: 0;
+            border-radius: 999px;
+            padding: 10px 16px;
+            font: inherit;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .toolbar-actions button {
+            background: linear-gradient(135deg, #157a7d, #17324d);
+            color: white;
+        }
+
+        .toolbar-actions a {
+            background: white;
+            color: var(--ink);
+            border: 1px solid var(--line);
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--line);
+            margin-bottom: 24px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--teal);
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .meta-grid,
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .card {
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 16px 18px;
+            background: var(--soft);
+            break-inside: avoid;
+        }
+
+        .card span {
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1.25fr 0.95fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .image-frame {
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .image-frame img {
+            width: 100%;
+            display: block;
+        }
+
+        .probability-item {
+            margin-bottom: 14px;
+        }
+
+        .probability-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 6px;
+        }
+
+        .probability-bar {
+            height: 12px;
+            border-radius: 999px;
+            background: #dfe8ee;
+            overflow: hidden;
+        }
+
+        .probability-fill {
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(135deg, #157a7d, #17324d);
+        }
+
+        .section {
+            margin-top: 24px;
+            break-inside: avoid;
+        }
+
+        ul {
+            margin: 12px 0 0;
+            padding-left: 20px;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+            }
+
+            .report-toolbar {
+                display: none;
+            }
+
+            .report-shell {
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-shell">
+        {% if print_mode %}
+        <div class="report-toolbar">
+            <p>Usa esta vista para imprimir o guardar el estudio como PDF desde tu navegador.</p>
+            <div class="toolbar-actions">
+                <button type="button" onclick="window.print()">Imprimir / Guardar PDF</button>
+                <a href="{{ url_for('ia.descargar_reporte', estudio_id=estudio.id) }}">Descargar HTML</a>
+            </div>
+        </div>
+        {% endif %}
+        <div class="report-header">
+            <div>
+                <span class="eyebrow">CitoSmart</span>
+                <h1>{{ estudio.titulo or 'Estudio citologico' }}</h1>
+                <p>Reporte de clasificacion orientativa asistida por IA para documentacion y revision profesional.</p>
+                <p>Esquema activo del modelo: {{ active_model.class_labels|join(', ') }}.</p>
+            </div>
+            <div>
+                <small>Fecha del estudio</small>
+                <p>{{ estudio.fecha or 'Sin fecha registrada' }}</p>
+            </div>
+        </div>
+
+        <div class="summary-grid">
+            <div class="card">
+                <span>Clasificacion IA</span>
+                <h2>{{ estudio.resultado_ia }}</h2>
+                <p>{{ estudio.resumen_ia }}</p>
+            </div>
+            <div class="card">
+                <span>Confianza estimada</span>
+                <h2>{{ estudio.confianza or 'No definida' }}</h2>
+                {% if probability_summary %}
+                <p>Clase mas probable: {{ probability_summary.top_display_name }}</p>
+                <p>Incertidumbre: {{ probability_summary.uncertainty_label }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="meta-grid">
+            <div class="card">
+                <span>Paciente</span>
+                <strong>{{ estudio.paciente_nombre }}</strong>
+                <p>{{ estudio.paciente_email or 'Correo no disponible' }}</p>
+            </div>
+            <div class="card">
+                <span>Profesional</span>
+                <strong>{{ estudio.profesional_nombre }}</strong>
+                <p>Nivel registrado: {{ estudio.nivel_riesgo or 'En revision' }}</p>
+            </div>
+        </div>
+
+        <div class="layout">
+            <div>
+                {% if probabilidades %}
+                <div class="section">
+                    <h3>Top 3 probabilidades</h3>
+                    {% for probabilidad in probabilidades %}
+                    <div class="probability-item">
+                        <div class="probability-head">
+                            <span>{{ probabilidad.display_name }}</span>
+                            <strong>{{ '%.2f'|format(probabilidad.probability) }}%</strong>
+                        </div>
+                        <div class="probability-bar">
+                            <div class="probability-fill" style="width: {{ '%.2f'|format(probabilidad.probability) }}%;"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="section">
+                    <h3>Interpretacion profesional</h3>
+                    <p>{{ estudio.diagnostico_profesional or 'Aun no se registraron observaciones adicionales por parte del profesional.' }}</p>
+                </div>
+
+                <div class="section">
+                    <h3>Observaciones clinicas</h3>
+                    <p>{{ estudio.observaciones or 'Sin observaciones clinicas registradas.' }}</p>
+                </div>
+
+                <div class="section">
+                    <h3>Recomendaciones de revision</h3>
+                    <ul>
+                        {% for recomendacion in recomendaciones %}
+                        <li>{{ recomendacion }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3>Limitaciones del modelo</h3>
+                    <ul>
+                        {% for limitacion in limitaciones %}
+                        <li>{{ limitacion }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div>
+                <div class="section">
+                    <h3>Muestra cargada</h3>
+                    <div class="image-frame">
+                        {% if image_data_uri %}
+                        <img src="{{ image_data_uri }}" alt="Imagen citologica">
+                        {% else %}
+                        <div class="card">
+                            <p>No fue posible incrustar la imagen en el reporte.</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

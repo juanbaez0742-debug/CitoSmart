@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block title %}Panel del paciente | CitoSmart{% endblock %}
+{% block content %}
+<section class="dashboard-hero">
+    <div>
+        <span class="eyebrow">Panel del paciente</span>
+        <h1>Hola, {{ paciente.nombre or paciente.username }}.</h1>
+        <p>Desde aqui puedes revisar tus estudios citologicos, seguir tu historial clínico y comunicarte con profesionales de salud.</p>
+    </div>
+    <a href="{{ url_for('chat.mensajes') }}" class="btn btn-cta-primary">Ir a mensajeria</a>
+</section>
+
+<section class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="metric-card">
+            <span>Registros de historial</span>
+            <strong>{{ resumen.historial_items }}</strong>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="metric-card">
+            <span>Estudios cargados</span>
+            <strong>{{ resumen.estudios_realizados }}</strong>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="metric-card">
+            <span>Profesionales de contacto</span>
+            <strong>{{ resumen.contactos_activos }}</strong>
+        </div>
+    </div>
+</section>
+
+<section class="row g-4">
+    <div class="col-lg-7">
+        <div class="content-card h-100">
+            <div class="section-title-row">
+                <div>
+                    <span class="panel-tag">Historial</span>
+                    <h2>Linea clinica reciente</h2>
+                </div>
+            </div>
+            {% if historial %}
+            <div class="timeline-list">
+                {% for item in historial %}
+                <article class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div>
+                        <h3>{{ item.titulo or item.descripcion }}</h3>
+                        <p>{{ item.detalle or item.descripcion }}</p>
+                        <small>{{ item.fecha }}{% if item.profesional_nombre %} · {{ item.profesional_nombre }}{% endif %}</small>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-state">Todavia no hay movimientos en tu historial. Se llenara conforme se registren estudios y observaciones.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="content-card mb-4">
+            <span class="panel-tag">Mensajeria</span>
+            <h2>Contacto rapído</h2>
+            <p>Inicia conversaciones para seguimiento, aclaraciones o monitoreo.</p>
+            <a href="{{ url_for('chat.mensajes') }}" class="btn btn-outline-dark w-100">Abrir conversaciones</a>
+        </div>
+
+        <div class="content-card">
+            <span class="panel-tag">Red clinica</span>
+            <h2>Profesionales disponibles</h2>
+            {% if profesionales %}
+            <div class="contact-list">
+                {% for profesional in profesionales %}
+                <a class="contact-card" href="{{ url_for('chat.chat_view', receptor_id=profesional.id) }}">
+                    <strong>{{ profesional.nombre }}</strong>
+                    <span>{{ profesional.especialidad or 'Profesional de salud' }}</span>
+                    <small>{{ profesional.institucion or profesional.email or 'Contacto disponible en plataforma' }}</small>
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-state">Aun no tienes profesionales asociados.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="content-card mt-4">
+    <div class="section-title-row">
+        <div>
+            <span class="panel-tag">Estudios</span>
+            <h2>Resultados recientes</h2>
+        </div>
+    </div>
+    {% if estudios %}
+    <div class="table-responsive">
+        <table class="table custom-table align-middle">
+            <thead>
+                <tr>
+                    <th>Estudio</th>
+                    <th>Resultado IA</th>
+                    <th>Riesgo</th>
+                    <th>Profesional</th>
+                    <th>Fecha</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for estudio in estudios %}
+                <tr>
+                    <td>{{ estudio.titulo or 'Estudio citologico' }}</td>
+                    <td>{{ estudio.resultado_ia }}</td>
+                    <td><span class="status-pill risk-{{ estudio.nivel_riesgo|lower }}">{{ estudio.nivel_riesgo or 'En revision' }}</span></td>
+                    <td>{{ estudio.profesional_nombre }}</td>
+                    <td>{{ estudio.fecha }}</td>
+                    <td><a href="{{ url_for('ia.resultado', estudio_id=estudio.id) }}" class="btn btn-sm btn-outline-dark">Ver detalle</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="empty-state">Todavia no hay estudios analizados en tu cuenta.</p>
+    {% endif %}
+</section>
+{% endblock %}

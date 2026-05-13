@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}Completar perfil | CitoSmart{% endblock %}
+{% block content %}
+<section class="register-shell">
+    <div class="section-heading mb-4">
+        <div>
+            <span class="eyebrow">Perfil inicial</span>
+            {% if user.rol == 'profesional' %}
+            <h1>Completa tu perfil profesional antes de entrar al panel.</h1>
+            <p>Este paso deja cerrada la cuenta y desbloquea el panel profesional.</p>
+            {% else %}
+            <h1>Completa el antecedente clinico inicial antes de entrar al panel.</h1>
+            <p>Este paso deja registrado el contexto clinico base del paciente y desbloquea el panel.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="auth-card">
+        <form method="POST" class="row g-3">
+            {% if user.rol == 'profesional' %}
+            <div class="col-md-6">
+                <label class="form-label">Especialidad</label>
+                <input type="text" name="especialidad" class="form-control" value="{{ user.especialidad or '' }}" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Cedula o matricula</label>
+                <input type="text" name="cedula" class="form-control" value="{{ user.cedula or '' }}">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Institucion</label>
+                <input type="text" name="institucion" class="form-control" value="{{ user.institucion or '' }}">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Experiencia</label>
+                <input type="text" name="experiencia" class="form-control" value="{{ user.experiencia or '' }}" placeholder="Ej. 5 anos en diagnostico citologico" required>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Perfil profesional</label>
+                <textarea name="biografia" class="form-control" rows="5" placeholder="Resume tu enfoque clinico, areas de interes y experiencia relevante.">{{ user.biografia or '' }}</textarea>
+            </div>
+            {% else %}
+            <div class="col-md-4">
+                <label class="form-label">Edad</label>
+                <input type="number" min="0" name="edad" class="form-control" value="{{ user.edad or '' }}">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Fecha de nacimiento</label>
+                <input type="date" name="fecha_nacimiento" class="form-control" value="{{ user.fecha_nacimiento or '' }}">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Genero</label>
+                <select name="genero" class="form-select">
+                    <option value="">Selecciona</option>
+                    <option value="Femenino" {% if user.genero == 'Femenino' %}selected{% endif %}>Femenino</option>
+                    <option value="Masculino" {% if user.genero == 'Masculino' %}selected{% endif %}>Masculino</option>
+                    <option value="Otro" {% if user.genero == 'Otro' %}selected{% endif %}>Otro</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Motivo de consulta</label>
+                <input type="text" name="motivo_consulta" class="form-control" value="{{ user.motivo_consulta or '' }}" placeholder="Ej. control preventivo o seguimiento">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Direccion</label>
+                <input type="text" name="direccion" class="form-control" value="{{ user.direccion or '' }}">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Antecedentes clinicos</label>
+                <textarea name="antecedentes" class="form-control" rows="5" placeholder="Antecedentes relevantes, tratamientos previos, hallazgos recientes." required>{{ user.antecedentes or '' }}</textarea>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Alergias u observaciones</label>
+                <textarea name="alergias" class="form-control" rows="5" placeholder="Alergias, medicamentos o datos a vigilar.">{{ user.alergias or '' }}</textarea>
+            </div>
+            {% endif %}
+
+            <div class="col-12 d-flex flex-wrap gap-3 mt-2">
+                <button type="submit" class="btn btn-cta-primary btn-lg">Guardar y continuar</button>
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-dark btn-lg">Salir</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

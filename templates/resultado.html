@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block title %}Resultado de analisis | CitoSmart{% endblock %}
+{% block content %}
+<section class="section-heading mb-4">
+    <div>
+        <span class="eyebrow">{{ active_model.model_scope }}</span>
+        <h1>{{ estudio.titulo or 'Estudio citologico' }}</h1>
+        <p>Vista consolidada de la clasificacion orientativa asistida por IA y de la interpretacion registrada por el profesional.</p>
+    </div>
+</section>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="content-card h-100">
+            <div class="result-topline">
+                <div>
+                    <span class="panel-tag">Clasificacion IA</span>
+                    <h2>{{ estudio.resultado_ia }}</h2>
+                </div>
+                <span class="status-pill risk-{{ (estudio.nivel_riesgo or 'En revision')|lower|replace(' ', '-') }}">{{ estudio.nivel_riesgo or 'En revision' }}</span>
+            </div>
+            <p class="lead mt-3">{{ estudio.resumen_ia }}</p>
+            <p class="mb-4">Esta salida corresponde al esquema activo del modelo: {{ active_model.class_labels|join(', ') }}. Debe correlacionarse con la revision profesional y el contexto clinico.</p>
+
+            {% if analysis_blocked %}
+            <div class="analysis-warning mb-4">
+                {% if analysis_unavailable %}
+                <strong>Analisis automatizado no disponible.</strong>
+                <p>El backend no pudo ejecutar el modelo de IA de forma confiable. Revisa la configuracion del servidor y valida manualmente la muestra mientras se corrige.</p>
+                {% else %}
+                <strong>Analisis bloqueado por seguridad.</strong>
+                <p>La imagen no alcanzo los criterios minimos para reportar una clasificacion automatica confiable. Revisa la muestra manualmente o vuelve a capturar una imagen citologica adecuada.</p>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <div class="result-grid">
+                <div class="result-card">
+                    <span>Paciente</span>
+                    <strong>{{ estudio.paciente_nombre }}</strong>
+                    <small>{{ estudio.paciente_email or 'Correo no disponible' }}</small>
+                </div>
+                <div class="result-card">
+                    <span>Profesional</span>
+                    <strong>{{ estudio.profesional_nombre }}</strong>
+                    <small>Confianza estimada {{ estudio.confianza or 'No definida' }}</small>
+                </div>
+            </div>
+
+            {% if probabilidades %}
+            <div class="mt-4">
+                <h3>Top 3 probabilidades</h3>
+                <div class="probability-list">
+                    {% for probabilidad in probabilidades %}
+                    <div class="probability-item">
+                        <div class="probability-labels">
+                            <span>{{ probabilidad.display_name }}</span>
+                            <strong>{{ '%.2f'|format(probabilidad.probability) }}%</strong>
+                        </div>
+                        <div class="probability-bar">
+                            <div class="probability-fill" style="width: {{ '%.2f'|format(probabilidad.probability) }}%;"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if probability_summary %}
+                <div class="probability-summary">
+                    <div class="probability-summary-card">
+                        <span>Clase mas probable</span>
+                        <strong>{{ probability_summary.top_display_name }}</strong>
+                        <small>{{ '%.2f'|format(probability_summary.top_probability) }}% de confianza estimada</small>
+                    </div>
+                    <div class="probability-summary-card">
+                        <span>Incertidumbre</span>
+                        <strong>{{ probability_summary.uncertainty_label }}</strong>
+                        <small>{{ probability_summary.uncertainty_message }}</small>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <div class="mt-4">
+                <h3>Interpretacion profesional</h3>
+                <p>{{ estudio.diagnostico_profesional or 'Aun no se registraron observaciones adicionales por parte del profesional.' }}</p>
+            </div>
+
+            <div class="mt-4">
+                <h3>Observaciones clinicas</h3>
+                <p>{{ estudio.observaciones or 'Sin observaciones clinicas registradas.' }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="content-card mb-4">
+            <span class="panel-tag">Imagen</span>
+            <h2>Muestra cargada</h2>
+            <img src="{{ url_for('ia.archivo_subido', filename=estudio.ruta_imagen) }}" alt="Imagen citologica" class="result-image">
+        </div>
+        <div class="content-card">
+            <span class="panel-tag">Siguiente paso</span>
+            <h2>Recomendaciones de revision</h2>
+            <ul class="clean-list">
+                {% for recomendacion in recomendaciones %}
+                <li>{{ recomendacion }}</li>
+                {% endfor %}
+            </ul>
+            <div class="d-flex flex-wrap gap-2 mt-3">
+                {% if session.get('rol') == 'profesional' %}
+                <a href="{{ url_for('dashboard.profesional_home') }}" class="btn btn-dark">Volver al panel</a>
+                {% else %}
+                <a href="{{ url_for('dashboard.paciente_home') }}" class="btn btn-dark">Volver a mi panel</a>
+                {% endif %}
+                <a href="{{ url_for('ia.reporte_imprimible', estudio_id=estudio.id) }}" class="btn btn-outline-dark" target="_blank" rel="noopener">Vista imprimible</a>
+                <a href="{{ url_for('ia.descargar_reporte', estudio_id=estudio.id) }}" class="btn btn-outline-dark">Descargar reporte</a>
+                <a href="{{ url_for('chat.mensajes') }}" class="btn btn-outline-dark">Mensajeria</a>
+            </div>
+        </div>
+        <div class="content-card mt-4">
+            <span class="panel-tag">Limitaciones</span>
+            <h2>Alcance del modelo</h2>
+            <ul class="clean-list">
+                {% for limitacion in limitaciones %}
+                <li>{{ limitacion }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

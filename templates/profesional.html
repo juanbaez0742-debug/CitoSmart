@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Registro profesional | CitoSmart{% endblock %}
+{% block content %}
+<div class="content-card">
+    <span class="panel-tag">Registro</span>
+    <h1>El formulario profesional ahora forma parte del registro principal.</h1>
+    <p>Se centralizo para crear la cuenta, capturar el perfil clinico y dejar listo el dashboard profesional.</p>
+    <a href="{{ url_for('auth.register', rol='profesional') }}" class="btn btn-cta-primary">Ir al registro profesional</a>
+</div>
+{% endblock %}

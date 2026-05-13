@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Registro de paciente | CitoSmart{% endblock %}
+{% block content %}
+<div class="content-card">
+    <span class="panel-tag">Registro</span>
+    <h1>El formulario de paciente ahora vive dentro del registro principal.</h1>
+    <p>Para mantener un solo flujo de acceso y expediente clinico, redirige al alta completa del paciente.</p>
+    <a href="{{ url_for('auth.register', rol='paciente') }}" class="btn btn-cta-primary">Ir al registro de paciente</a>
+</div>
+{% endblock %}

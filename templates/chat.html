@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block title %}Mensajeria | CitoSmart{% endblock %}
+{% block content %}
+<section class="section-heading mb-4">
+    <div>
+        <span class="eyebrow">Mensajeria</span>
+        <h1>Seguimiento entre paciente y profesional.</h1>
+        <p>Usa este espacio para dudas, indicaciones y monitoreo del caso.</p>
+    </div>
+</section>
+
+<div class="chat-layout">
+    <aside class="chat-sidebar">
+        <h2>Contactos</h2>
+        {% if contacts %}
+        <div class="contact-list">
+            {% for contact in contacts %}
+            <a class="contact-card {% if active_contact and active_contact.id == contact.id %}active{% endif %}" href="{{ url_for('chat.mensajes', contact=contact.id) }}">
+                <strong>{{ contact.nombre }}</strong>
+                <span>{{ contact.especialidad or contact.email or 'Disponible en plataforma' }}</span>
+                <small>{{ contact.telefono or 'Sin telefono registrado' }}</small>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="empty-state">No hay contactos disponibles todavia.</p>
+        {% endif %}
+    </aside>
+
+    <section class="chat-panel">
+        {% if active_contact %}
+        <div class="chat-header">
+            <div>
+                <h2>{{ active_contact.nombre }}</h2>
+                <p>{{ active_contact.especialidad or active_contact.email or 'Contacto activo' }}</p>
+            </div>
+        </div>
+        <div id="chat-box" class="chat-box"></div>
+        <div class="chat-inputbar">
+            <input type="text" id="mensaje" class="form-control" placeholder="Escribe tu mensaje...">
+            <button class="btn btn-dark" id="sendButton">Enviar</button>
+        </div>
+        {% else %}
+        <div class="content-card h-100 d-flex align-items-center justify-content-center">
+            <p class="empty-state mb-0">Selecciona un contacto para comenzar una conversacion.</p>
+        </div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}
+{% block scripts %}
+{% if active_contact %}
+<script>
+const receptorId = {{ active_contact.id }};
+const currentUserId = {{ session.get('user_id') }};
+const chatBox = document.getElementById('chat-box');
+const input = document.getElementById('mensaje');
+const sendButton = document.getElementById('sendButton');
+
+function renderMensaje(mensaje) {
+    const own = Number(mensaje.emisor) === Number(currentUserId);
+    return `
+        <article class="message-bubble ${own ? 'own' : ''}">
+            <div>${mensaje.contenido}</div>
+            <small>${mensaje.fecha}</small>
+        </article>
+    `;
+}
+
+function cargarMensajes() {
+    fetch(`/obtener_mensajes/${receptorId}`)
+        .then((response) => response.json())
+        .then((data) => {
+            chatBox.innerHTML = data.map(renderMensaje).join('');
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+}
+
+function enviarMensaje() {
+    const mensaje = input.value.trim();
+    if (!mensaje) {
+        return;
+    }
+
+    fetch('/enviar_mensaje', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            receptor_id: receptorId,
+            mensaje
+        })
+    }).then(() => {
+        input.value = '';
+        cargarMensajes();
+    });
+}
+
+sendButton.addEventListener('click', enviarMensaje);
+input.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        enviarMensaje();
+    }
+});
+
+setInterval(cargarMensajes, 3000);
+cargarMensajes();
+</script>
+{% endif %}
+{% endblock %}
